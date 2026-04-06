@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | Kingdom of 8th</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #064e3b; 
+            --primary-hover: #065f46;
+            --accent: #d97706;  
+            --bg-light: #f8fafc;
+            --surface: #ffffff;
+            --text-dark: #0f172a;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --radius: 12px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+        }
+
+        /* Navigation Bar */
+        nav {
+            background-color: var(--surface);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.25rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--primary);
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .user-greeting {
+            font-weight: 500;
+            color: var(--text-dark);
+        }
+
+        .btn-outline {
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--border);
+            background: transparent;
+            border-radius: 8px;
+            font-family: inherit;
+            font-weight: 600;
+            color: var(--text-dark);
+            cursor: pointer;
+            transition: 0.2s ease;
+        }
+
+        .btn-outline:hover {
+            background-color: #fee2e2;
+            color: #dc2626;
+            border-color: #f87171;
+        }
+
+        /* Main Dashboard Content */
+        main {
+            max-width: 1000px;
+            margin: 3rem auto;
+            padding: 0 2rem;
+        }
+
+        .dashboard-header {
+            margin-bottom: 2rem;
+        }
+
+        .dashboard-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .dashboard-header p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        /* Grid Layout for Cards */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .card {
+            background-color: var(--surface);
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+
+        .card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .card p {
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+            line-height: 1.5;
+        }
+
+        .btn-primary {
+            display: inline-block;
+            background-color: var(--primary);
+            color: white;
+            padding: 0.75rem 1.25rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            text-align: center;
+            width: 100%;
+            transition: 0.2s;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-hover);
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">🏛️ Kingdom of 8th</div>
+        <div class="user-menu">
+            <span class="user-greeting" id="userNameDisplay">Loading...</span>
+            <button class="btn-outline" id="signOutBtn">Sign Out</button>
+        </div>
+    </nav>
+
+    <main>
+        <div class="dashboard-header">
+            <h1>Citizen Dashboard</h1>
+            <p>Welcome to your official portal. What would you like to do today?</p>
+        </div>
+
+        <div class="grid">
+            <div class="card">
+                <h3>📝 Draft a Bill</h3>
+                <p>Have an idea to improve the classroom? Draft formal legislation to be reviewed by the class.</p>
+                <a href="#" class="btn-primary">Start Draft</a>
+            </div>
+
+            <div class="card">
+                <h3>🗣️ Town Hall</h3>
+                <p>View upcoming bills, debate with your peers, and prepare for the next legislative session.</p>
+                <a href="#" class="btn-primary">Enter Town Hall</a>
+            </div>
+
+            <div class="card">
+                <h3>🗳️ Voting Booth</h3>
+                <p>Cast your vote on active bills and participate in classroom leadership elections.</p>
+                <a href="#" class="btn-primary">View Active Polls</a>
+            </div>
+        </div>
+    </main>
+
+    <script type="module">
+        // Firebase Imports
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
+
+        // Your exact Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCNbW2UTw62V4ojtXd_F0ZbEbn9JWHFV7c",
+            authDomain: "thperiodwebsite.firebaseapp.com",
+            projectId: "thperiodwebsite",
+            storageBucket: "thperiodwebsite.firebasestorage.app",
+            messagingSenderId: "1035004245969",
+            appId: "1:1035004245969:web:f025b31117173da88a52f0",
+            measurementId: "G-2VM1MDHR3T"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        // DOM Elements
+        const userNameDisplay = document.getElementById('userNameDisplay');
+        const signOutBtn = document.getElementById('signOutBtn');
+
+        // Security Check: Make sure user is logged in
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // User is signed in, display their name
+                userNameDisplay.innerText = `Citizen ${user.displayName || ''}`;
+            } else {
+                // User is NOT signed in, kick them back to the login page immediately
+                window.location.href = "index.html";
+            }
+        });
+
+        // Sign Out Logic
+        signOutBtn.addEventListener('click', async () => {
+            try {
+                await signOut(auth);
+                // The onAuthStateChanged listener above will automatically catch this 
+                // and redirect them to index.html
+            } catch (error) {
+                console.error("Error signing out:", error);
+            }
+        });
+    </script>
+</body>
+</html>
