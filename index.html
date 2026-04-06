@@ -49,8 +49,8 @@
 
         /* Header & Navigation */
         header {
-            background-color: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(8px);
+            background-color: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
             padding: 1.25rem 5%;
             display: flex;
             justify-content: space-between;
@@ -111,22 +111,22 @@
             cursor: pointer;
             transition: var(--transition);
             box-shadow: var(--shadow-sm);
+            gap: 0.5rem;
         }
 
-        .btn:hover {
+        .btn:hover:not(:disabled) {
             background-color: var(--accent-500);
             transform: translateY(-1px);
             box-shadow: var(--shadow-md);
         }
 
-        .btn:active {
+        .btn:active:not(:disabled) {
             transform: translateY(0);
         }
 
         .btn:disabled {
             opacity: 0.7;
             cursor: not-allowed;
-            transform: none;
         }
 
         .btn-outline {
@@ -136,10 +136,9 @@
             box-shadow: none;
         }
 
-        .btn-outline:hover {
+        .btn-outline:hover:not(:disabled) {
             background-color: var(--bg-light);
             border-color: var(--primary-700);
-            box-shadow: none;
         }
 
         .auth-buttons {
@@ -258,8 +257,8 @@
         .modal-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(15, 23, 42, 0.7);
-            backdrop-filter: blur(5px);
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(8px);
             display: none;
             justify-content: center;
             align-items: center;
@@ -300,6 +299,7 @@
             justify-content: center;
             border-radius: 50%;
             background: var(--bg-light);
+            border: none;
         }
 
         .close-btn:hover { 
@@ -320,6 +320,7 @@
         .form-group {
             margin-bottom: 1.25rem;
             text-align: left;
+            position: relative;
         }
 
         .form-group label {
@@ -351,6 +352,24 @@
             border-color: var(--accent-400);
             background-color: var(--surface-white);
             box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 1rem;
+            top: 2.35rem;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .password-toggle:hover {
+            color: var(--primary-900);
         }
 
         .toggle-text {
@@ -386,6 +405,21 @@
         .success { background-color: var(--success-bg); color: var(--success-text); border: 1px solid #a7f3d0; }
         .error { background-color: var(--error-bg); color: var(--error-text); border: 1px solid #fecaca; }
 
+        /* Spinner for buttons */
+        .spinner {
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 0.8s linear infinite;
+            display: none;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
         /* Footer */
         footer {
             background-color: var(--primary-900);
@@ -399,7 +433,7 @@
         /* Responsive */
         @media (max-width: 768px) {
             header { padding: 1rem 1.5rem; flex-wrap: wrap; }
-            .nav-container { display: none; } /* Could be replaced with a hamburger menu */
+            .nav-container { display: none; }
             .auth-buttons { display: flex; width: 100%; margin-top: 1rem; justify-content: center; }
             .features { padding: 3rem 1.5rem; }
             .modal-content { padding: 2rem; width: 90%; }
@@ -411,48 +445,50 @@
     <header>
         <h1>🏛️ Kingdom of 8th Period</h1>
         <div class="nav-container">
-            <nav>
+            <nav aria-label="Main Navigation">
                 <ul>
                     <li><a href="#about">About the Sim</a></li>
                 </ul>
             </nav>
             <div class="auth-buttons">
-                <button id="navSignInBtn" class="btn btn-outline">Sign In</button>
-                <button id="navSignUpBtn" class="btn">Sign Up</button>
+                <button id="navSignInBtn" class="btn btn-outline" aria-haspopup="dialog">Sign In</button>
+                <button id="navSignUpBtn" class="btn" aria-haspopup="dialog">Sign Up</button>
             </div>
         </div>
     </header>
 
-    <section class="hero">
-        <h2>Your Place For <br>The Kingdom</h2>
-        <p>Welcome to the classroom democracy simulation. Register for your official citizenship to start participating in the legislative process.</p>
-        <button class="btn" style="padding: 0.875rem 2rem; font-size: 1.05rem;" id="heroSignUpBtn">Become a Citizen</button>
-    </section>
+    <main>
+        <section class="hero">
+            <h2>Your Place For <br>The Kingdom</h2>
+            <p>Welcome to the classroom democracy simulation. Register for your official citizenship to start participating in the legislative process.</p>
+            <button class="btn" style="padding: 0.875rem 2rem; font-size: 1.05rem;" id="heroSignUpBtn" aria-haspopup="dialog">Become a Citizen</button>
+        </section>
 
-    <section id="about" class="features">
-        <div class="feature-card">
-            <span class="feature-card-icon">📝</span>
-            <h3>Draft Legislation</h3>
-            <p>Identify classroom issues and write bills to solve them. Convince your peers why your bill should become law.</p>
-        </div>
-        <div class="feature-card">
-            <span class="feature-card-icon">🗣️</span>
-            <h3>Debate & Discuss</h3>
-            <p>Participate in town halls and legislative sessions. Practice civil discourse and learn to compromise.</p>
-        </div>
-        <div class="feature-card">
-            <span class="feature-card-icon">🗳️</span>
-            <h3>Cast Your Vote</h3>
-            <p>Vote on proposed laws, elect officials, and shape the future of the classroom environment together.</p>
-        </div>
-    </section>
+        <section id="about" class="features">
+            <div class="feature-card">
+                <span class="feature-card-icon" aria-hidden="true">📝</span>
+                <h3>Draft Legislation</h3>
+                <p>Identify classroom issues and write bills to solve them. Convince your peers why your bill should become law.</p>
+            </div>
+            <div class="feature-card">
+                <span class="feature-card-icon" aria-hidden="true">🗣️</span>
+                <h3>Debate & Discuss</h3>
+                <p>Participate in town halls and legislative sessions. Practice civil discourse and learn to compromise.</p>
+            </div>
+            <div class="feature-card">
+                <span class="feature-card-icon" aria-hidden="true">🗳️</span>
+                <h3>Cast Your Vote</h3>
+                <p>Vote on proposed laws, elect officials, and shape the future of the classroom environment together.</p>
+            </div>
+        </section>
+    </main>
 
-    <div id="authModal" class="modal-overlay">
+    <div id="authModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
         <div class="modal-content">
-            <span class="close-btn" id="closeModal">&times;</span>
+            <button class="close-btn" id="closeModal" aria-label="Close Modal">&times;</button>
             <h2 id="modalTitle">Create Account</h2>
             
-            <form id="authForm">
+            <form id="authForm" novalidate>
                 <div class="form-group" id="nameGroup">
                     <label for="studentName">Full Name</label>
                     <input type="text" id="studentName" placeholder="e.g., Jane Doe">
@@ -464,14 +500,23 @@
                 <div class="form-group">
                     <label for="password">Password</label>
                     <input type="password" id="password" required placeholder="Min. 6 characters">
+                    <button type="button" class="password-toggle" id="togglePassword" aria-label="Toggle password visibility">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                    </button>
                 </div>
-                <button type="submit" class="btn" style="width: 100%; margin-top: 0.5rem;" id="submitBtn">Sign Up</button>
+                <button type="submit" class="btn" style="width: 100%; margin-top: 0.5rem;" id="submitBtn">
+                    <span class="spinner" id="btnSpinner"></span>
+                    <span id="btnText">Sign Up</span>
+                </button>
             </form>
 
             <p class="toggle-text" id="toggleText">
                 Already have an account? <a href="#" id="toggleModeBtn">Sign In</a>
             </p>
-            <div id="message-box"></div>
+            <div id="message-box" role="alert"></div>
         </div>
     </div>
 
@@ -485,9 +530,9 @@
         import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
         import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
 
-        // Firebase Configuration (Make sure to restrict your API key in the Firebase Console!)
+        // Firebase Configuration
         const firebaseConfig = {
-            apiKey: "AIzaSyCwgP3yFL-__qL3sZA3RXLgn67dhsfiRS0",
+            apiKey: "AIzaSyCwgP3yFL-__qL3sZA3RXLgn67dhsfiRS0", // Note: Ensure API key is restricted in Firebase console
             authDomain: "kindgomof8th.firebaseapp.com",
             projectId: "kindgomof8th",
             storageBucket: "kindgomof8th.firebasestorage.app",
@@ -500,24 +545,37 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        // UI Logic for Modal
+        // DOM Elements
         const modal = document.getElementById('authModal');
         const closeModal = document.getElementById('closeModal');
         const nameGroup = document.getElementById('nameGroup');
         const modalTitle = document.getElementById('modalTitle');
         const submitBtn = document.getElementById('submitBtn');
+        const btnText = document.getElementById('btnText');
+        const btnSpinner = document.getElementById('btnSpinner');
         const toggleText = document.getElementById('toggleText');
         const messageBox = document.getElementById('message-box');
         const studentNameInput = document.getElementById('studentName');
         const authForm = document.getElementById('authForm');
+        const togglePasswordBtn = document.getElementById('togglePassword');
+        const passwordInput = document.getElementById('password');
 
         let isSignUpMode = true; 
+
+        // Password Visibility Toggle
+        togglePasswordBtn.addEventListener('click', () => {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            // Toggle eye icon styling if desired (currently uses basic SVG)
+            togglePasswordBtn.style.opacity = type === 'text' ? '0.5' : '1';
+        });
 
         // Open Modal Functions
         function openModal(mode) {
             modal.classList.add('active');
             messageBox.style.display = 'none';
             authForm.reset();
+            passwordInput.setAttribute('type', 'password'); // Reset password visibility
             
             if (mode === 'signup') {
                 setSignUpMode();
@@ -528,6 +586,11 @@
 
         // Close Modal
         closeModal.addEventListener('click', () => modal.classList.remove('active'));
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modal.classList.contains('active')) {
+                modal.classList.remove('active');
+            }
+        });
         window.addEventListener('click', (e) => {
             if (e.target === modal) modal.classList.remove('active');
         });
@@ -538,7 +601,7 @@
             nameGroup.style.display = 'block';
             studentNameInput.required = true;
             modalTitle.innerText = "Create Account";
-            submitBtn.innerText = "Sign Up";
+            btnText.innerText = "Sign Up";
             toggleText.innerHTML = `Already have an account? <a href="#" id="toggleModeBtn">Sign In</a>`;
             reattachToggleListener();
         }
@@ -548,7 +611,7 @@
             nameGroup.style.display = 'none';
             studentNameInput.required = false;
             modalTitle.innerText = "Welcome Back";
-            submitBtn.innerText = "Sign In";
+            btnText.innerText = "Sign In";
             toggleText.innerHTML = `Need an account? <a href="#" id="toggleModeBtn">Sign Up</a>`;
             reattachToggleListener();
         }
@@ -565,22 +628,39 @@
         document.getElementById('heroSignUpBtn').addEventListener('click', () => openModal('signup'));
         document.getElementById('navSignInBtn').addEventListener('click', () => openModal('signin'));
 
+        // Form Validation helper
+        function validateEmail(email) {
+            return email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/);
+        }
+
         // Firebase Form Submission
         authForm.addEventListener('submit', async function(event) {
             event.preventDefault();
             
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
+            const email = document.getElementById('email').value.trim();
+            const password = passwordInput.value;
             
-            submitBtn.innerText = "Processing...";
+            // Basic Frontend Validation
+            if (!validateEmail(email)) {
+                showMessage("⚠️ Please enter a valid email address.", "error");
+                return;
+            }
+            if (password.length < 6) {
+                showMessage("⚠️ Password must be at least 6 characters.", "error");
+                return;
+            }
+
+            // Loading State
+            btnText.innerText = "Processing";
+            btnSpinner.style.display = "inline-block";
             submitBtn.disabled = true;
             messageBox.style.display = 'none';
-            messageBox.className = '';
 
             try {
                 if (isSignUpMode) {
-                    // SIGN UP LOGIC
-                    const name = studentNameInput.value;
+                    const name = studentNameInput.value.trim();
+                    if (!name) throw new Error("Full Name is required.");
+
                     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
                     const user = userCredential.user;
 
@@ -593,16 +673,12 @@
                         createdAt: new Date().toISOString()
                     });
 
-                    messageBox.innerHTML = `🎉 Welcome, Citizen ${name}!`;
-                    messageBox.classList.add('success');
+                    showMessage(`🎉 Welcome, Citizen ${name}!`, "success");
                 } else {
-                    // SIGN IN LOGIC
                     await signInWithEmailAndPassword(auth, email, password);
-                    messageBox.innerHTML = `✅ Successfully signed in!`;
-                    messageBox.classList.add('success');
+                    showMessage(`✅ Successfully signed in!`, "success");
                 }
                 
-                messageBox.style.display = 'block';
                 setTimeout(() => modal.classList.remove('active'), 2000); 
 
             } catch (error) {
@@ -612,14 +688,20 @@
                 else if (error.code === 'auth/invalid-credential') errorMessage = "Incorrect email or password.";
                 else errorMessage = error.message;
 
-                messageBox.innerHTML = `⚠️ ${errorMessage}`;
-                messageBox.classList.add('error');
-                messageBox.style.display = 'block';
+                showMessage(`⚠️ ${errorMessage}`, "error");
             } finally {
-                submitBtn.innerText = isSignUpMode ? "Sign Up" : "Sign In";
+                // Reset Loading State
+                btnText.innerText = isSignUpMode ? "Sign Up" : "Sign In";
+                btnSpinner.style.display = "none";
                 submitBtn.disabled = false;
             }
         });
+
+        function showMessage(text, type) {
+            messageBox.innerHTML = text;
+            messageBox.className = type;
+            messageBox.style.display = 'block';
+        }
     </script>
 </body>
 </html>
