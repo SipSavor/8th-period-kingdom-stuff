@@ -363,20 +363,20 @@
     </div>
 
     <script type="module">
-        // Firebase Imports (Added onAuthStateChanged and signOut)
+        // Firebase Imports
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
         import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
         import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
 
-        // Firebase Configuration
+        // Your specific Firebase Configuration
         const firebaseConfig = {
-            apiKey: "AIzaSyCwgP3yFL-__qL3sZA3RXLgn67dhsfiRS0", 
-            authDomain: "kindgomof8th.firebaseapp.com",
-            projectId: "kindgomof8th",
-            storageBucket: "kindgomof8th.firebasestorage.app",
-            messagingSenderId: "657589968788",
-            appId: "1:657589968788:web:600e0c1251b692c52bb981",
-            measurementId: "G-KXZ99N2H89"
+            apiKey: "AIzaSyCNbW2UTw62V4ojtXd_F0ZbEbn9JWHFV7c",
+            authDomain: "thperiodwebsite.firebaseapp.com",
+            projectId: "thperiodwebsite",
+            storageBucket: "thperiodwebsite.firebasestorage.app",
+            messagingSenderId: "1035004245969",
+            appId: "1:1035004245969:web:f025b31117173da88a52f0",
+            measurementId: "G-2VM1MDHR3T"
         };
 
         const app = initializeApp(firebaseConfig);
@@ -410,7 +410,6 @@
         let isSignUpMode = true; 
 
         // --- AUTH STATE OBSERVER ---
-        // Automatically switches between Form and Dashboard based on login status
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 // User is logged in -> Show Dashboard
@@ -488,9 +487,6 @@
                     // SIGN IN
                     await signInWithEmailAndPassword(auth, email, password);
                 }
-                // Note: We don't need a success message here because onAuthStateChanged 
-                // will instantly hide the form and show the dashboard upon success.
-
             } catch (error) {
                 let errorMessage = "Authentication failed.";
                 if (error.code === 'auth/email-already-in-use') errorMessage = "Email already exists.";
