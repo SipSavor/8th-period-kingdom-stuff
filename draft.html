@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Draft a Bill | Kingdom of 8th</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #064e3b; 
+            --primary-hover: #065f46;
+            --accent: #d97706;  
+            --bg-light: #f8fafc;
+            --surface: #ffffff;
+            --text-dark: #0f172a;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --radius: 12px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+        }
+
+        /* Navigation Bar */
+        nav {
+            background-color: var(--surface);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.25rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .btn-outline {
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--border);
+            background: transparent;
+            border-radius: 8px;
+            font-family: inherit;
+            font-weight: 600;
+            color: var(--text-dark);
+            cursor: pointer;
+            text-decoration: none;
+            transition: 0.2s ease;
+        }
+
+        .btn-outline:hover {
+            background-color: var(--bg-light);
+        }
+
+        /* Main Content */
+        main {
+            max-width: 800px;
+            margin: 3rem auto;
+            padding: 0 2rem;
+        }
+
+        /* We hide the form initially until we confirm their role */
+        #drafting-area {
+            display: none; 
+        }
+
+        #loading-message {
+            text-align: center;
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            margin-top: 4rem;
+        }
+
+        .card {
+            background-color: var(--surface);
+            padding: 2.5rem;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+
+        .card h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+        }
+
+        .card p.subtitle {
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .form-group input, 
+        .form-group select, 
+        .form-group textarea {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 1.5px solid var(--border);
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: 0.3s;
+            background-color: var(--bg-light);
+        }
+
+        .form-group input:focus, 
+        .form-group select:focus, 
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            background-color: var(--surface);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 150px;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: 0.2s;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background-color: var(--primary-hover);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        #status-message {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 500;
+            display: none;
+        }
+        .success { background-color: #ecfdf5; color: #059669; border: 1px solid #a7f3d0; }
+        .error { background-color: #fef2f2; color: #dc2626; border: 1px solid #fecaca; }
+
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="dashboard.html" class="logo">🏛️ Kingdom of 8th</a>
+        <a href="dashboard.html" class="btn-outline">← Back to Dashboard</a>
+    </nav>
+
+    <main>
+        <div id="loading-message">Verifying government credentials...</div>
+
+        <div id="drafting-area">
+            <div class="card">
+                <h1>Draft Official Legislation</h1>
+                <p class="subtitle">Only authorized Chancellors and Judges may submit bills to the floor.</p>
+
+                <form id="billForm">
+                    <div class="form-group">
+                        <label for="billTitle">Bill Title</label>
+                        <input type="text" id="billTitle" required placeholder="e.g., The Friday Free-Seating Act">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="billCategory">Category</label>
+                        <select id="billCategory" required>
+                            <option value="" disabled selected>Select a category...</option>
+                            <option value="Classroom Rules">Classroom Rules</option>
+                            <option value="Assignments/Homework">Assignments / Homework</option>
+                            <option value="Privileges">Classroom Privileges</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="billContent">Proposed Legislation (The "Meat" of the Bill)</label>
+                        <textarea id="billContent" required placeholder="Explain exactly what this bill will change, add, or remove from the Kingdom..."></textarea>
+                    </div>
+
+                    <button type="submit" class="btn-primary" id="submitBtn">Submit Bill for Review</button>
+                    <div id="status-message"></div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <script type="module">
+        // Firebase Imports
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
+        import { getFirestore, doc, getDoc, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
+
+        // Your exact Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCNbW2UTw62V4ojtXd_F0ZbEbn9JWHFV7c",
+            authDomain: "thperiodwebsite.firebaseapp.com",
+            projectId: "thperiodwebsite",
+            storageBucket: "thperiodwebsite.firebasestorage.app",
+            messagingSenderId: "1035004245969",
+            appId: "1:1035004245969:web:f025b31117173da88a52f0",
+            measurementId: "G-2VM1MDHR3T"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // DOM Elements
+        const loadingMessage = document.getElementById('loading-message');
+        const draftingArea = document.getElementById('drafting-area');
+        const billForm = document.getElementById('billForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const statusMessage = document.getElementById('status-message');
+
+        let currentUser = null;
+        let userRole = null;
+
+        // --- SECURITY CHECK: VERIFY ROLE ---
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                currentUser = user;
+                
+                // Fetch this user's profile from Firestore to check their role
+                const userDocRef = doc(db, "users", user.uid);
+                const userDocSnap = await getDoc(userDocRef);
+
+                if (userDocSnap.exists()) {
+                    userRole = userDocSnap.data().role;
+                    
+                    // Check if they are a chancellor or judge
+                    if (userRole === "chancellor" || userRole === "judge") {
+                        // Access Granted! Reveal the form.
+                        loadingMessage.style.display = 'none';
+                        draftingArea.style.display = 'block';
+                    } else {
+                        // Access Denied! Boot them back to the dashboard.
+                        alert("Access Denied: You must be a Chancellor or Judge to draft a bill.");
+                        window.location.href = "dashboard.html";
+                    }
+                } else {
+                    // Profile missing in DB
+                    window.location.href = "index.html";
+                }
+            } else {
+                // Not logged in at all
+                window.location.href = "index.html";
+            }
+        });
+
+        // --- SUBMIT BILL TO DATABASE ---
+        billForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const title = document.getElementById('billTitle').value.trim();
+            const category = document.getElementById('billCategory').value;
+            const content = document.getElementById('billContent').value.trim();
+
+            submitBtn.disabled = true;
+            submitBtn.innerText = "Submitting...";
+            statusMessage.style.display = 'none';
+
+            try {
+                // Add new document to a "bills" collection
+                await addDoc(collection(db, "bills"), {
+                    title: title,
+                    category: category,
+                    content: content,
+                    authorName: currentUser.displayName,
+                    authorUid: currentUser.uid,
+                    authorRole: userRole,
+                    status: "Pending", // Starts as pending until voted on
+                    timestamp: new Date().toISOString()
+                });
+
+                // Success UI update
+                statusMessage.innerText = "Bill successfully drafted and submitted to the floor!";
+                statusMessage.className = 'success';
+                statusMessage.style.display = 'block';
+                billForm.reset();
+
+            } catch (error) {
+                console.error("Error adding bill: ", error);
+                statusMessage.innerText = "Error saving bill. Please try again.";
+                statusMessage.className = 'error';
+                statusMessage.style.display = 'block';
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerText = "Submit Bill for Review";
+            }
+        });
+    </script>
+</body>
+</html>
