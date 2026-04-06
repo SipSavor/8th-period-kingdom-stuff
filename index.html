@@ -3,33 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DemocraSim | Classroom Simulation</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>Kingdom of 8th | DemocraSim</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
-        /* Modern CSS Reset & Variables */
         :root {
-            --primary-900: #0f172a;
-            --primary-800: #1e293b;
-            --primary-700: #334155;
-            --accent-600: #4f46e5;
-            --accent-500: #6366f1;
-            --accent-400: #818cf8;
-            --surface-white: #ffffff;
+            --primary: #064e3b; /* Deep Emerald */
+            --primary-hover: #065f46;
+            --accent: #d97706;  /* Royal Amber */
+            --accent-hover: #b45309;
             --bg-light: #f8fafc;
-            --text-main: #0f172a;
+            --surface: #ffffff;
+            --text-dark: #0f172a;
+            --text-light: #f8fafc;
             --text-muted: #64748b;
-            --border-light: #e2e8f0;
-            --success-bg: #ecfdf5;
-            --success-text: #059669;
-            --error-bg: #fef2f2;
-            --error-text: #dc2626;
-            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-            --radius-lg: 12px;
-            --radius-xl: 16px;
-            --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            --border: #e2e8f0;
+            --radius: 12px;
+            --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         * {
@@ -39,288 +29,128 @@
         }
 
         body {
-            font-family: 'Inter', system-ui, -apple-system, sans-serif;
-            line-height: 1.6;
-            color: var(--text-main);
+            font-family: 'Outfit', sans-serif;
             background-color: var(--bg-light);
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-        }
-
-        /* Header & Navigation */
-        header {
-            background-color: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(12px);
-            padding: 1.25rem 5%;
+            color: var(--text-dark);
+            height: 100vh;
+            overflow: hidden;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            box-shadow: var(--shadow-sm);
-            border-bottom: 1px solid var(--border-light);
         }
 
-        header h1 {
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: var(--primary-900);
-            letter-spacing: -0.025em;
+        /* --- Split Layout --- */
+        .split-container {
             display: flex;
-            align-items: center;
-            gap: 10px;
+            width: 100%;
+            height: 100%;
         }
 
-        .nav-container {
-            display: flex;
-            align-items: center;
-            gap: 2.5rem;
-        }
-
-        nav ul {
-            list-style: none;
-            display: flex;
-            gap: 2rem;
-        }
-
-        nav a {
-            color: var(--text-muted);
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 0.95rem;
-            transition: var(--transition);
-        }
-
-        nav a:hover {
-            color: var(--accent-600);
-        }
-
-        /* Premium Buttons */
-        .btn {
-            display: inline-flex;
-            justify-content: center;
-            align-items: center;
-            background-color: var(--accent-600);
-            color: white;
-            padding: 0.625rem 1.25rem;
-            border: none;
-            border-radius: var(--radius-lg);
-            font-size: 0.95rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: var(--transition);
-            box-shadow: var(--shadow-sm);
-            gap: 0.5rem;
-        }
-
-        .btn:hover:not(:disabled) {
-            background-color: var(--accent-500);
-            transform: translateY(-1px);
-            box-shadow: var(--shadow-md);
-        }
-
-        .btn:active:not(:disabled) {
-            transform: translateY(0);
-        }
-
-        .btn:disabled {
-            opacity: 0.7;
-            cursor: not-allowed;
-        }
-
-        .btn-outline {
-            background-color: transparent;
-            color: var(--primary-800);
-            border: 1px solid var(--border-light);
-            box-shadow: none;
-        }
-
-        .btn-outline:hover:not(:disabled) {
-            background-color: var(--bg-light);
-            border-color: var(--primary-700);
-        }
-
-        .auth-buttons {
-            display: flex;
-            gap: 0.75rem;
-        }
-
-        /* Hero Section */
-        .hero {
-            background: linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(30, 41, 59, 0.85) 100%), 
-                        url('https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?auto=format&fit=crop&w=1920&q=80') center/cover;
-            color: white;
-            text-align: center;
-            padding: 8rem 1.5rem;
-            min-height: 65vh;
+        /* Left Side: Branding & Info */
+        .brand-side {
+            flex: 1.2;
+            background: linear-gradient(135deg, var(--primary) 0%, #022c22 100%);
+            color: var(--text-light);
+            padding: 4rem;
             display: flex;
             flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .hero h2 {
-            font-size: clamp(2.5rem, 5vw, 4rem);
-            font-weight: 800;
-            margin-bottom: 1.5rem;
-            letter-spacing: -0.025em;
-            line-height: 1.1;
-            background: linear-gradient(to right, #ffffff, #94a3b8);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .hero p {
-            font-size: 1.125rem;
-            color: #cbd5e1;
-            max-width: 600px;
-            margin: 0 auto 2.5rem auto;
-            font-weight: 400;
-            line-height: 1.7;
-        }
-
-        /* Features Section */
-        .features {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            padding: 5rem 5%;
-            gap: 2rem;
-            max-width: 1280px;
-            margin: 0 auto;
-        }
-
-        .feature-card {
-            background: var(--surface-white);
-            padding: 2.5rem 2rem;
-            border-radius: var(--radius-xl);
-            box-shadow: var(--shadow-md);
-            text-align: center;
-            border: 1px solid var(--border-light);
-            transition: var(--transition);
+            justify-content: space-between;
             position: relative;
             overflow: hidden;
         }
 
-        .feature-card::before {
-            content: '';
+        .brand-side::after {
+            content: "🏛️";
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background: var(--accent-600);
-            transform: scaleX(0);
-            transition: transform 0.3s ease;
-            transform-origin: left;
+            font-size: 25rem;
+            opacity: 0.03;
+            bottom: -50px;
+            right: -50px;
+            pointer-events: none;
         }
 
-        .feature-card:hover {
-            transform: translateY(-4px);
-            box-shadow: var(--shadow-xl);
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--accent);
         }
 
-        .feature-card:hover::before {
-            transform: scaleX(1);
-        }
-
-        .feature-card-icon {
-            font-size: 2.5rem;
-            margin-bottom: 1.25rem;
-            display: inline-block;
-            background: var(--bg-light);
-            width: 80px;
-            height: 80px;
-            line-height: 80px;
-            border-radius: 50%;
-        }
-
-        .feature-card h3 {
-            margin-bottom: 1rem;
-            color: var(--primary-900);
-            font-size: 1.25rem;
+        .hero-text h1 {
+            font-size: clamp(3rem, 5vw, 4.5rem);
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
             font-weight: 700;
         }
 
-        .feature-card p {
-            color: var(--text-muted);
-            font-size: 0.95rem;
+        .hero-text p {
+            font-size: 1.125rem;
+            color: #cbd5e1;
+            max-width: 85%;
             line-height: 1.6;
         }
 
-        /* Modal Overlay & Animation */
-        @keyframes modalFadeIn {
-            from { opacity: 0; transform: scale(0.95) translateY(-10px); }
-            to { opacity: 1; transform: scale(1) translateY(0); }
-        }
-
-        .modal-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(15, 23, 42, 0.6);
-            backdrop-filter: blur(8px);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .modal-overlay.active {
+        .feature-list {
+            margin-top: 3rem;
             display: flex;
-            opacity: 1;
+            flex-direction: column;
+            gap: 1.5rem;
         }
 
-        .modal-content {
-            background: var(--surface-white);
-            padding: 2.5rem;
-            border-radius: var(--radius-xl);
-            width: 100%;
-            max-width: 400px;
-            position: relative;
-            box-shadow: var(--shadow-xl);
-            animation: modalFadeIn 0.3s ease forwards;
-        }
-
-        .close-btn {
-            position: absolute;
-            top: 1.25rem;
-            right: 1.25rem;
-            font-size: 1.5rem;
-            line-height: 1;
-            color: var(--text-muted);
-            cursor: pointer;
-            transition: var(--transition);
-            width: 32px;
-            height: 32px;
+        .feature-item {
             display: flex;
             align-items: center;
-            justify-content: center;
+            gap: 1rem;
+            font-size: 1.05rem;
+        }
+
+        .feature-icon {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.75rem;
             border-radius: 50%;
-            background: var(--bg-light);
-            border: none;
+            display: inline-flex;
+            color: var(--accent);
         }
 
-        .close-btn:hover { 
-            color: var(--primary-900);
-            background: var(--border-light);
+        /* Right Side: Authentication & Dashboard */
+        .auth-side {
+            flex: 1;
+            background-color: var(--bg-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            position: relative;
         }
 
-        .modal-content h2 {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--primary-900);
-            margin-bottom: 1.5rem;
-            text-align: center;
-            letter-spacing: -0.025em;
+        .card {
+            background: var(--surface);
+            width: 100%;
+            max-width: 420px;
+            padding: 3rem 2.5rem;
+            border-radius: var(--radius);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
+            border: 1px solid var(--border);
+        }
+
+        .card-header {
+            margin-bottom: 2rem;
+        }
+
+        .card-header h2 {
+            font-size: 2rem;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .card-header p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
         }
 
         /* Forms */
         .form-group {
             margin-bottom: 1.25rem;
-            text-align: left;
-            position: relative;
         }
 
         .form-group label {
@@ -328,211 +158,219 @@
             margin-bottom: 0.5rem;
             font-weight: 500;
             font-size: 0.875rem;
-            color: var(--primary-800);
+            color: var(--text-dark);
         }
 
         .form-group input {
             width: 100%;
-            padding: 0.75rem 1rem;
-            border: 1px solid var(--border-light);
-            border-radius: var(--radius-lg);
-            font-size: 0.95rem;
+            padding: 0.875rem 1rem;
+            border: 1.5px solid var(--border);
+            border-radius: 8px;
+            font-size: 1rem;
             transition: var(--transition);
             font-family: inherit;
-            color: var(--text-main);
-            background-color: var(--bg-light);
-        }
-
-        .form-group input::placeholder {
-            color: #94a3b8;
+            background-color: var(--surface);
         }
 
         .form-group input:focus {
             outline: none;
-            border-color: var(--accent-400);
-            background-color: var(--surface-white);
-            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(6, 78, 59, 0.1);
         }
 
-        .password-toggle {
-            position: absolute;
-            right: 1rem;
-            top: 2.35rem;
-            background: none;
+        .btn {
+            width: 100%;
+            padding: 0.875rem;
             border: none;
-            color: var(--text-muted);
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
             cursor: pointer;
-            padding: 0;
+            transition: var(--transition);
             display: flex;
-            align-items: center;
             justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
         }
-        
-        .password-toggle:hover {
-            color: var(--primary-900);
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background-color: var(--primary-hover);
+        }
+
+        .btn-danger {
+            background-color: #fee2e2;
+            color: #dc2626;
+            border: 1px solid #f87171;
+            margin-top: 2rem;
+        }
+
+        .btn-danger:hover {
+            background-color: #fecaca;
+        }
+
+        .btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
         }
 
         .toggle-text {
             text-align: center;
             margin-top: 1.5rem;
-            font-size: 0.875rem;
+            font-size: 0.9rem;
             color: var(--text-muted);
         }
 
         .toggle-text a {
-            color: var(--accent-600);
+            color: var(--accent);
             font-weight: 600;
             text-decoration: none;
-            transition: var(--transition);
         }
 
-        .toggle-text a:hover { 
-            color: var(--accent-500);
-            text-decoration: underline; 
+        .toggle-text a:hover {
+            text-decoration: underline;
         }
 
+        /* Message Alerts */
         #message-box {
-            margin-top: 1.25rem;
+            margin-top: 1rem;
             padding: 0.875rem;
-            border-radius: var(--radius-lg);
+            border-radius: 8px;
             display: none;
             font-size: 0.875rem;
-            text-align: center;
             font-weight: 500;
-            animation: modalFadeIn 0.3s ease;
-        }
-        
-        .success { background-color: var(--success-bg); color: var(--success-text); border: 1px solid #a7f3d0; }
-        .error { background-color: var(--error-bg); color: var(--error-text); border: 1px solid #fecaca; }
-
-        /* Spinner for buttons */
-        .spinner {
-            width: 16px;
-            height: 16px;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            border-top-color: #fff;
-            animation: spin 0.8s linear infinite;
-            display: none;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        /* Footer */
-        footer {
-            background-color: var(--primary-900);
-            color: #94a3b8;
             text-align: center;
-            padding: 2rem 1rem;
-            font-size: 0.875rem;
-            border-top: 1px solid var(--primary-800);
+        }
+        .success { background-color: #ecfdf5; color: #059669; border: 1px solid #a7f3d0; }
+        .error { background-color: #fef2f2; color: #dc2626; border: 1px solid #fecaca; }
+
+        /* Dashboard State */
+        #dashboard-view {
+            display: none;
+            text-align: center;
+        }
+
+        .user-avatar {
+            width: 80px;
+            height: 80px;
+            background-color: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin: 0 auto 1.5rem auto;
+            font-weight: 700;
         }
 
         /* Responsive */
-        @media (max-width: 768px) {
-            header { padding: 1rem 1.5rem; flex-wrap: wrap; }
-            .nav-container { display: none; }
-            .auth-buttons { display: flex; width: 100%; margin-top: 1rem; justify-content: center; }
-            .features { padding: 3rem 1.5rem; }
-            .modal-content { padding: 2rem; width: 90%; }
+        @media (max-width: 900px) {
+            body { overflow: auto; height: auto; min-height: 100vh; }
+            .split-container { flex-direction: column; }
+            .brand-side { padding: 3rem 2rem; flex: none; }
+            .hero-text h1 { font-size: 2.5rem; }
+            .auth-side { padding: 3rem 1rem; flex: none; min-height: 60vh; }
         }
     </style>
 </head>
 <body>
 
-    <header>
-        <h1>🏛️ Kingdom of 8th Period</h1>
-        <div class="nav-container">
-            <nav aria-label="Main Navigation">
-                <ul>
-                    <li><a href="#about">About the Sim</a></li>
-                </ul>
-            </nav>
-            <div class="auth-buttons">
-                <button id="navSignInBtn" class="btn btn-outline" aria-haspopup="dialog">Sign In</button>
-                <button id="navSignUpBtn" class="btn" aria-haspopup="dialog">Sign Up</button>
+    <div class="split-container">
+        
+        <div class="brand-side">
+            <div class="logo">🏛️ Kingdom of 8th Period</div>
+            
+            <div class="hero-text">
+                <h1>Claim Your<br>Citizenship.</h1>
+                <p>Enter the classroom democracy simulation. Draft legislation, debate with peers, and cast your vote to shape the future of our classroom environment.</p>
+                
+                <div class="feature-list">
+                    <div class="feature-item">
+                        <span class="feature-icon">📝</span>
+                        <span>Draft & sponsor official class bills</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">🗣️</span>
+                        <span>Debate in legislative town halls</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">🗳️</span>
+                        <span>Vote in live classroom elections</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="font-size: 0.875rem; color: rgba(255,255,255,0.5);">
+                &copy; 2026 DemocraSim Educational Tools
             </div>
         </div>
-    </header>
 
-    <main>
-        <section class="hero">
-            <h2>Your Place For <br>The Kingdom</h2>
-            <p>Welcome to the classroom democracy simulation. Register for your official citizenship to start participating in the legislative process.</p>
-            <button class="btn" style="padding: 0.875rem 2rem; font-size: 1.05rem;" id="heroSignUpBtn" aria-haspopup="dialog">Become a Citizen</button>
-        </section>
-
-        <section id="about" class="features">
-            <div class="feature-card">
-                <span class="feature-card-icon" aria-hidden="true">📝</span>
-                <h3>Draft Legislation</h3>
-                <p>Identify classroom issues and write bills to solve them. Convince your peers why your bill should become law.</p>
-            </div>
-            <div class="feature-card">
-                <span class="feature-card-icon" aria-hidden="true">🗣️</span>
-                <h3>Debate & Discuss</h3>
-                <p>Participate in town halls and legislative sessions. Practice civil discourse and learn to compromise.</p>
-            </div>
-            <div class="feature-card">
-                <span class="feature-card-icon" aria-hidden="true">🗳️</span>
-                <h3>Cast Your Vote</h3>
-                <p>Vote on proposed laws, elect officials, and shape the future of the classroom environment together.</p>
-            </div>
-        </section>
-    </main>
-
-    <div id="authModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-        <div class="modal-content">
-            <button class="close-btn" id="closeModal" aria-label="Close Modal">&times;</button>
-            <h2 id="modalTitle">Create Account</h2>
+        <div class="auth-side">
             
-            <form id="authForm" novalidate>
-                <div class="form-group" id="nameGroup">
-                    <label for="studentName">Full Name</label>
-                    <input type="text" id="studentName" placeholder="e.g., Jane Doe">
+            <div class="card" id="auth-view">
+                <div class="card-header">
+                    <h2 id="form-title">Create Account</h2>
+                    <p id="form-subtitle">Register to become an official citizen.</p>
                 </div>
-                <div class="form-group">
-                    <label for="email">School Email</label>
-                    <input type="email" id="email" required placeholder="student@school.edu">
-                </div>
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" id="password" required placeholder="Min. 6 characters">
-                    <button type="button" class="password-toggle" id="togglePassword" aria-label="Toggle password visibility">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                            <circle cx="12" cy="12" r="3"></circle>
-                        </svg>
-                    </button>
-                </div>
-                <button type="submit" class="btn" style="width: 100%; margin-top: 0.5rem;" id="submitBtn">
-                    <span class="spinner" id="btnSpinner"></span>
-                    <span id="btnText">Sign Up</span>
-                </button>
-            </form>
 
-            <p class="toggle-text" id="toggleText">
-                Already have an account? <a href="#" id="toggleModeBtn">Sign In</a>
-            </p>
-            <div id="message-box" role="alert"></div>
+                <form id="authForm" novalidate>
+                    <div class="form-group" id="nameGroup">
+                        <label for="studentName">Full Name</label>
+                        <input type="text" id="studentName" placeholder="e.g., Jane Doe">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">School Email</label>
+                        <input type="email" id="email" required placeholder="student@school.edu">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" required placeholder="Min. 6 characters">
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary" id="submitBtn">
+                        <span id="btnText">Sign Up</span>
+                    </button>
+                </form>
+
+                <p class="toggle-text">
+                    <span id="toggleTextLabel">Already have an account?</span> 
+                    <a href="#" id="toggleModeBtn">Sign In</a>
+                </p>
+
+                <div id="message-box"></div>
+            </div>
+
+            <div class="card" id="dashboard-view">
+                <div class="user-avatar" id="userInitial">?</div>
+                <h2 style="margin-bottom: 0.5rem;" id="welcomeName">Welcome, Citizen!</h2>
+                <p style="color: var(--text-muted); margin-bottom: 2rem;" id="userEmailDisplay">email@school.edu</p>
+                
+                <div style="background: var(--bg-light); border: 1px solid var(--border); padding: 1rem; border-radius: 8px; font-size: 0.95rem;">
+                    <strong>Status:</strong> Active Citizen<br>
+                    <strong>Next Election:</strong> Friday, 3:00 PM
+                </div>
+
+                <button class="btn btn-danger" id="signOutBtn">Sign Out</button>
+            </div>
+
         </div>
     </div>
 
-    <footer>
-        <p>&copy; 2026 Kingdom of 8th Simulation. Built for educational purposes.</p>
-    </footer>
-
     <script type="module">
-        // Firebase Imports
+        // Firebase Imports (Added onAuthStateChanged and signOut)
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
-        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
         import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
 
         // Firebase Configuration
         const firebaseConfig = {
-            apiKey: "AIzaSyCwgP3yFL-__qL3sZA3RXLgn67dhsfiRS0", // Note: Ensure API key is restricted in Firebase console
+            apiKey: "AIzaSyCwgP3yFL-__qL3sZA3RXLgn67dhsfiRS0", 
             authDomain: "kindgomof8th.firebaseapp.com",
             projectId: "kindgomof8th",
             storageBucket: "kindgomof8th.firebasestorage.app",
@@ -546,124 +384,97 @@
         const db = getFirestore(app);
 
         // DOM Elements
-        const modal = document.getElementById('authModal');
-        const closeModal = document.getElementById('closeModal');
+        const authView = document.getElementById('auth-view');
+        const dashboardView = document.getElementById('dashboard-view');
+        const authForm = document.getElementById('authForm');
+        
+        // Form Elements
+        const formTitle = document.getElementById('form-title');
+        const formSubtitle = document.getElementById('form-subtitle');
         const nameGroup = document.getElementById('nameGroup');
-        const modalTitle = document.getElementById('modalTitle');
+        const studentNameInput = document.getElementById('studentName');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
         const submitBtn = document.getElementById('submitBtn');
         const btnText = document.getElementById('btnText');
-        const btnSpinner = document.getElementById('btnSpinner');
-        const toggleText = document.getElementById('toggleText');
+        const toggleModeBtn = document.getElementById('toggleModeBtn');
+        const toggleTextLabel = document.getElementById('toggleTextLabel');
         const messageBox = document.getElementById('message-box');
-        const studentNameInput = document.getElementById('studentName');
-        const authForm = document.getElementById('authForm');
-        const togglePasswordBtn = document.getElementById('togglePassword');
-        const passwordInput = document.getElementById('password');
+
+        // Dashboard Elements
+        const welcomeName = document.getElementById('welcomeName');
+        const userEmailDisplay = document.getElementById('userEmailDisplay');
+        const userInitial = document.getElementById('userInitial');
+        const signOutBtn = document.getElementById('signOutBtn');
 
         let isSignUpMode = true; 
 
-        // Password Visibility Toggle
-        togglePasswordBtn.addEventListener('click', () => {
-            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-            passwordInput.setAttribute('type', type);
-            // Toggle eye icon styling if desired (currently uses basic SVG)
-            togglePasswordBtn.style.opacity = type === 'text' ? '0.5' : '1';
-        });
-
-        // Open Modal Functions
-        function openModal(mode) {
-            modal.classList.add('active');
-            messageBox.style.display = 'none';
-            authForm.reset();
-            passwordInput.setAttribute('type', 'password'); // Reset password visibility
-            
-            if (mode === 'signup') {
-                setSignUpMode();
+        // --- AUTH STATE OBSERVER ---
+        // Automatically switches between Form and Dashboard based on login status
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // User is logged in -> Show Dashboard
+                authView.style.display = 'none';
+                dashboardView.style.display = 'block';
+                
+                welcomeName.innerText = `Welcome, ${user.displayName || 'Citizen'}!`;
+                userEmailDisplay.innerText = user.email;
+                userInitial.innerText = (user.displayName || 'C').charAt(0).toUpperCase();
             } else {
-                setSignInMode();
-            }
-        }
-
-        // Close Modal
-        closeModal.addEventListener('click', () => modal.classList.remove('active'));
-        window.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && modal.classList.contains('active')) {
-                modal.classList.remove('active');
+                // User is logged out -> Show Auth Form
+                authView.style.display = 'block';
+                dashboardView.style.display = 'none';
+                authForm.reset();
+                messageBox.style.display = 'none';
             }
         });
-        window.addEventListener('click', (e) => {
-            if (e.target === modal) modal.classList.remove('active');
+
+        // --- UI TOGGLE LOGIC ---
+        toggleModeBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            isSignUpMode = !isSignUpMode;
+            messageBox.style.display = 'none';
+
+            if (isSignUpMode) {
+                nameGroup.style.display = 'block';
+                studentNameInput.required = true;
+                formTitle.innerText = "Create Account";
+                formSubtitle.innerText = "Register to become an official citizen.";
+                btnText.innerText = "Sign Up";
+                toggleTextLabel.innerText = "Already have an account?";
+                toggleModeBtn.innerText = "Sign In";
+            } else {
+                nameGroup.style.display = 'none';
+                studentNameInput.required = false;
+                formTitle.innerText = "Welcome Back";
+                formSubtitle.innerText = "Sign in to access the kingdom.";
+                btnText.innerText = "Sign In";
+                toggleTextLabel.innerText = "Need an account?";
+                toggleModeBtn.innerText = "Sign Up";
+            }
         });
 
-        // Toggle UI modes
-        function setSignUpMode() {
-            isSignUpMode = true;
-            nameGroup.style.display = 'block';
-            studentNameInput.required = true;
-            modalTitle.innerText = "Create Account";
-            btnText.innerText = "Sign Up";
-            toggleText.innerHTML = `Already have an account? <a href="#" id="toggleModeBtn">Sign In</a>`;
-            reattachToggleListener();
-        }
-
-        function setSignInMode() {
-            isSignUpMode = false;
-            nameGroup.style.display = 'none';
-            studentNameInput.required = false;
-            modalTitle.innerText = "Welcome Back";
-            btnText.innerText = "Sign In";
-            toggleText.innerHTML = `Need an account? <a href="#" id="toggleModeBtn">Sign Up</a>`;
-            reattachToggleListener();
-        }
-
-        function reattachToggleListener() {
-            document.getElementById('toggleModeBtn').addEventListener('click', (e) => {
-                e.preventDefault();
-                isSignUpMode ? setSignInMode() : setSignUpMode();
-            });
-        }
-
-        // Button Listeners to open modal
-        document.getElementById('navSignUpBtn').addEventListener('click', () => openModal('signup'));
-        document.getElementById('heroSignUpBtn').addEventListener('click', () => openModal('signup'));
-        document.getElementById('navSignInBtn').addEventListener('click', () => openModal('signin'));
-
-        // Form Validation helper
-        function validateEmail(email) {
-            return email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/);
-        }
-
-        // Firebase Form Submission
+        // --- AUTHENTICATION LOGIC ---
         authForm.addEventListener('submit', async function(event) {
             event.preventDefault();
             
-            const email = document.getElementById('email').value.trim();
+            const email = emailInput.value.trim();
             const password = passwordInput.value;
             
-            // Basic Frontend Validation
-            if (!validateEmail(email)) {
-                showMessage("⚠️ Please enter a valid email address.", "error");
-                return;
-            }
-            if (password.length < 6) {
-                showMessage("⚠️ Password must be at least 6 characters.", "error");
-                return;
-            }
-
-            // Loading State
-            btnText.innerText = "Processing";
-            btnSpinner.style.display = "inline-block";
+            btnText.innerText = "Processing...";
             submitBtn.disabled = true;
             messageBox.style.display = 'none';
 
             try {
                 if (isSignUpMode) {
+                    // SIGN UP
                     const name = studentNameInput.value.trim();
                     if (!name) throw new Error("Full Name is required.");
 
                     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
                     const user = userCredential.user;
 
+                    // Update Auth Profile & Firestore DB
                     await updateProfile(user, { displayName: name });
                     await setDoc(doc(db, "users", user.uid), {
                         uid: user.uid,
@@ -673,13 +484,12 @@
                         createdAt: new Date().toISOString()
                     });
 
-                    showMessage(`🎉 Welcome, Citizen ${name}!`, "success");
                 } else {
+                    // SIGN IN
                     await signInWithEmailAndPassword(auth, email, password);
-                    showMessage(`✅ Successfully signed in!`, "success");
                 }
-                
-                setTimeout(() => modal.classList.remove('active'), 2000); 
+                // Note: We don't need a success message here because onAuthStateChanged 
+                // will instantly hide the form and show the dashboard upon success.
 
             } catch (error) {
                 let errorMessage = "Authentication failed.";
@@ -688,20 +498,23 @@
                 else if (error.code === 'auth/invalid-credential') errorMessage = "Incorrect email or password.";
                 else errorMessage = error.message;
 
-                showMessage(`⚠️ ${errorMessage}`, "error");
+                messageBox.innerHTML = `⚠️ ${errorMessage}`;
+                messageBox.className = 'error';
+                messageBox.style.display = 'block';
             } finally {
-                // Reset Loading State
                 btnText.innerText = isSignUpMode ? "Sign Up" : "Sign In";
-                btnSpinner.style.display = "none";
                 submitBtn.disabled = false;
             }
         });
 
-        function showMessage(text, type) {
-            messageBox.innerHTML = text;
-            messageBox.className = type;
-            messageBox.style.display = 'block';
-        }
+        // --- SIGN OUT LOGIC ---
+        signOutBtn.addEventListener('click', async () => {
+            try {
+                await signOut(auth);
+            } catch (error) {
+                console.error("Sign out error", error);
+            }
+        });
     </script>
 </body>
 </html>
