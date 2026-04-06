@@ -112,7 +112,7 @@
             color: var(--accent);
         }
 
-        /* Right Side: Authentication & Dashboard */
+        /* Right Side: Authentication */
         .auth-side {
             flex: 1;
             background-color: var(--bg-light);
@@ -203,17 +203,6 @@
             background-color: var(--primary-hover);
         }
 
-        .btn-danger {
-            background-color: #fee2e2;
-            color: #dc2626;
-            border: 1px solid #f87171;
-            margin-top: 2rem;
-        }
-
-        .btn-danger:hover {
-            background-color: #fecaca;
-        }
-
         .btn:disabled {
             opacity: 0.7;
             cursor: not-allowed;
@@ -246,28 +235,7 @@
             font-weight: 500;
             text-align: center;
         }
-        .success { background-color: #ecfdf5; color: #059669; border: 1px solid #a7f3d0; }
         .error { background-color: #fef2f2; color: #dc2626; border: 1px solid #fecaca; }
-
-        /* Dashboard State */
-        #dashboard-view {
-            display: none;
-            text-align: center;
-        }
-
-        .user-avatar {
-            width: 80px;
-            height: 80px;
-            background-color: var(--primary);
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-            margin: 0 auto 1.5rem auto;
-            font-weight: 700;
-        }
 
         /* Responsive */
         @media (max-width: 900px) {
@@ -312,8 +280,7 @@
         </div>
 
         <div class="auth-side">
-            
-            <div class="card" id="auth-view">
+            <div class="card" id="auth-view" style="display: none;">
                 <div class="card-header">
                     <h2 id="form-title">Create Account</h2>
                     <p id="form-subtitle">Register to become an official citizen.</p>
@@ -345,27 +312,13 @@
 
                 <div id="message-box"></div>
             </div>
-
-            <div class="card" id="dashboard-view">
-                <div class="user-avatar" id="userInitial">?</div>
-                <h2 style="margin-bottom: 0.5rem;" id="welcomeName">Welcome, Citizen!</h2>
-                <p style="color: var(--text-muted); margin-bottom: 2rem;" id="userEmailDisplay">email@school.edu</p>
-                
-                <div style="background: var(--bg-light); border: 1px solid var(--border); padding: 1rem; border-radius: 8px; font-size: 0.95rem;">
-                    <strong>Status:</strong> Active Citizen<br>
-                    <strong>Next Election:</strong> Friday, 3:00 PM
-                </div>
-
-                <button class="btn btn-danger" id="signOutBtn">Sign Out</button>
-            </div>
-
         </div>
     </div>
 
     <script type="module">
         // Firebase Imports
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
-        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
         import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
 
         // Your specific Firebase Configuration
@@ -385,10 +338,7 @@
 
         // DOM Elements
         const authView = document.getElementById('auth-view');
-        const dashboardView = document.getElementById('dashboard-view');
         const authForm = document.getElementById('authForm');
-        
-        // Form Elements
         const formTitle = document.getElementById('form-title');
         const formSubtitle = document.getElementById('form-subtitle');
         const nameGroup = document.getElementById('nameGroup');
@@ -401,34 +351,22 @@
         const toggleTextLabel = document.getElementById('toggleTextLabel');
         const messageBox = document.getElementById('message-box');
 
-        // Dashboard Elements
-        const welcomeName = document.getElementById('welcomeName');
-        const userEmailDisplay = document.getElementById('userEmailDisplay');
-        const userInitial = document.getElementById('userInitial');
-        const signOutBtn = document.getElementById('signOutBtn');
-
         let isSignUpMode = true; 
 
         // --- AUTH STATE OBSERVER ---
         onAuthStateChanged(auth, (user) => {
             if (user) {
-                // User is logged in -> Show Dashboard
-                authView.style.display = 'none';
-                dashboardView.style.display = 'block';
-                
-                welcomeName.innerText = `Welcome, ${user.displayName || 'Citizen'}!`;
-                userEmailDisplay.innerText = user.email;
-                userInitial.innerText = (user.displayName || 'C').charAt(0).toUpperCase();
+                // If user is logged in, redirect them to the dashboard
+                window.location.href = "dashboard.html";
             } else {
-                // User is logged out -> Show Auth Form
+                // If nobody is logged in, show the auth form
                 authView.style.display = 'block';
-                dashboardView.style.display = 'none';
                 authForm.reset();
                 messageBox.style.display = 'none';
             }
         });
 
-        // --- UI TOGGLE LOGIC ---
+        // --- UI TOGGLE LOGIC (Sign Up vs Sign In) ---
         toggleModeBtn.addEventListener('click', (e) => {
             e.preventDefault();
             isSignUpMode = !isSignUpMode;
@@ -487,6 +425,9 @@
                     // SIGN IN
                     await signInWithEmailAndPassword(auth, email, password);
                 }
+                // No need for a success message; the onAuthStateChanged listener 
+                // at the top will instantly redirect them once successful.
+                
             } catch (error) {
                 let errorMessage = "Authentication failed.";
                 if (error.code === 'auth/email-already-in-use') errorMessage = "Email already exists.";
@@ -497,18 +438,10 @@
                 messageBox.innerHTML = `⚠️ ${errorMessage}`;
                 messageBox.className = 'error';
                 messageBox.style.display = 'block';
-            } finally {
+                
+                // Reset button so they can try again
                 btnText.innerText = isSignUpMode ? "Sign Up" : "Sign In";
                 submitBtn.disabled = false;
-            }
-        });
-
-        // --- SIGN OUT LOGIC ---
-        signOutBtn.addEventListener('click', async () => {
-            try {
-                await signOut(auth);
-            } catch (error) {
-                console.error("Sign out error", error);
             }
         });
     </script>
