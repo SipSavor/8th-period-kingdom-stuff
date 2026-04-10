@@ -128,14 +128,15 @@
         import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
         import { getFirestore, doc, getDoc, collection, getDocs, updateDoc } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
 
+        // UPDATED: Now matching your main database configuration
         const firebaseConfig = {
-            apiKey: "AIzaSyCNbW2UTw62V4ojtXd_F0ZbEbn9JWHFV7c",
-            authDomain: "thperiodwebsite.firebaseapp.com",
-            projectId: "thperiodwebsite",
-            storageBucket: "thperiodwebsite.firebasestorage.app",
-            messagingSenderId: "1035004245969",
-            appId: "1:1035004245969:web:f025b31117173da88a52f0",
-            measurementId: "G-2VM1MDHR3T"
+            apiKey: "AIzaSyCYbYKtFnZKCRBRLKV0_MQgj1ADzehz048",
+            authDomain: "text01-6527c.firebaseapp.com",
+            projectId: "text01-6527c",
+            storageBucket: "text01-6527c.firebasestorage.app",
+            messagingSenderId: "487919743026",
+            appId: "1:487919743026:web:805c0be8d7cefa2d6fcc2b",
+            measurementId: "G-L7J7L5D5LV"
         };
 
         const app = initializeApp(firebaseConfig);
@@ -152,6 +153,7 @@
                 const userDocRef = doc(db, "users", user.uid);
                 const userDocSnap = await getDoc(userDocRef);
 
+                // Remember: Your role in the database must be typed exactly as "admin" (lowercase)
                 if (userDocSnap.exists() && userDocSnap.data().role === "admin") {
                     // Access Granted! Load users.
                     loadingMessage.style.display = 'none';
@@ -203,7 +205,6 @@
         }
 
         // --- UPDATE ROLE IN FIRESTORE ---
-        // We attach this to the window object so the inline onclick button can trigger it
         window.updateUserRole = async function(uid) {
             const newRole = document.getElementById(`role-${uid}`).value;
             const button = document.getElementById(`btn-${uid}`);
