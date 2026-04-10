@@ -311,17 +311,17 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
         import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
-        import { getFirestore } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, serverTimestamp, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
 
-        // Your Firebase Configuration
+        // Your NEW Firebase Configuration
         const firebaseConfig = {
-            apiKey: "AIzaSyCNbW2UTw62V4ojtXd_F0ZbEbn9JWHFV7c",
-            authDomain: "thperiodwebsite.firebaseapp.com",
-            projectId: "thperiodwebsite",
-            storageBucket: "thperiodwebsite.firebasestorage.app",
-            messagingSenderId: "1035004245969",
-            appId: "1:1035004245969:web:f025b31117173da88a52f0",
-            measurementId: "G-2VM1MDHR3T"
+            apiKey: "AIzaSyCYbYKtFnZKCRBRLKV0_MQgj1ADzehz048",
+            authDomain: "text01-6527c.firebaseapp.com",
+            projectId: "text01-6527c",
+            storageBucket: "text01-6527c.firebasestorage.app",
+            messagingSenderId: "487919743026",
+            appId: "1:487919743026:web:805c0be8d7cefa2d6fcc2b",
+            measurementId: "G-L7J7L5D5LV"
         };
 
         const app = initializeApp(firebaseConfig);
@@ -330,49 +330,74 @@
 
         let currentUser = { name: "Citizen", initial: "C" };
 
-        // Check if logged in to get their real name
+        // Check user session
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 currentUser.name = user.displayName || "Citizen";
                 currentUser.initial = currentUser.name.charAt(0).toUpperCase();
             } else {
-                // Kick them out if not logged in
-                window.location.href = "index.html";
+                window.location.href = "index.html"; // Kick out if not logged in
             }
         });
 
-        // --- FRONTEND CHAT LOGIC ---
-        // Note: This currently only posts to the local screen. 
-        // You will need to write this to Firestore to make it multiplayer!
+        // --- REAL-TIME CHAT LOGIC ---
         const chatInput = document.getElementById('chatInput');
         const sendBtn = document.getElementById('sendBtn');
         const messageBoard = document.getElementById('messageBoard');
+        const messagesRef = collection(db, "messages");
 
-        function postMessage() {
+        // Listen for live database updates
+        const q = query(messagesRef, orderBy("createdAt", "asc"));
+        
+        onSnapshot(q, (snapshot) => {
+            snapshot.docChanges().forEach((change) => {
+                if (change.type === "added") {
+                    const data = change.doc.data();
+                    
+                    // Format timestamp (handles 'pending' local time before server confirms)
+                    let timeString = "Just now";
+                    if (data.createdAt) {
+                        const date = data.createdAt.toDate();
+                        timeString = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                    }
+
+                    // Render to HTML
+                    const msgHTML = `
+                        <div class="message">
+                            <div class="avatar" style="background-color: var(--text-dark);">${data.authorInitial}</div>
+                            <div class="message-content">
+                                <div class="message-author">${data.authorName} <span class="message-time">${timeString}</span></div>
+                                <div class="message-text">${data.text}</div>
+                            </div>
+                        </div>
+                    `;
+                    messageBoard.insertAdjacentHTML('beforeend', msgHTML);
+                    
+                    // Auto-scroll to bottom
+                    messageBoard.scrollTop = messageBoard.scrollHeight;
+                }
+            });
+        });
+
+        // Send new message to Database
+        async function postMessage() {
             const text = chatInput.value.trim();
             if (text === "") return;
 
-            // Get current time
-            const now = new Date();
-            const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-
-            // Create HTML for new message
-            const msgHTML = `
-                <div class="message">
-                    <div class="avatar" style="background-color: var(--text-dark);">${currentUser.initial}</div>
-                    <div class="message-content">
-                        <div class="message-author">${currentUser.name} <span class="message-time">${timeString}</span></div>
-                        <div class="message-text">${text}</div>
-                    </div>
-                </div>
-            `;
-
-            // Append to board
-            messageBoard.insertAdjacentHTML('beforeend', msgHTML);
-            
-            // Clear input and scroll to bottom
+            // Clear input immediately for better UI feel
             chatInput.value = "";
-            messageBoard.scrollTop = messageBoard.scrollHeight;
+
+            try {
+                await addDoc(messagesRef, {
+                    text: text,
+                    authorName: currentUser.name,
+                    authorInitial: currentUser.initial,
+                    createdAt: serverTimestamp() // Official Firestore timestamp
+                });
+            } catch (error) {
+                console.error("Error sending message: ", error);
+                alert("Failed to send message.");
+            }
         }
 
         // Trigger post on button click or Enter key
