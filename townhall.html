@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Town Hall | Kingdom of 8th</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #064e3b; 
+            --primary-hover: #065f46;
+            --accent: #d97706;  
+            --bg-light: #f8fafc;
+            --surface: #ffffff;
+            --text-dark: #0f172a;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --radius: 12px;
+            --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Navigation Bar */
+        nav {
+            background-color: var(--surface);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .logo {
+            font-size: 1.25rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .btn-outline {
+            padding: 0.5rem 1.25rem;
+            border: 1px solid var(--border);
+            background: var(--surface);
+            border-radius: 8px;
+            font-family: inherit;
+            font-weight: 600;
+            color: var(--text-dark);
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .btn-outline:hover {
+            background-color: #f1f5f9;
+            border-color: #cbd5e1;
+        }
+
+        /* Main Content Layout */
+        main {
+            max-width: 1000px;
+            margin: 3rem auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        /* Current Bill Section */
+        .bill-card {
+            background-color: var(--surface);
+            padding: 2rem;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-md);
+            border-top: 5px solid var(--primary);
+        }
+
+        .bill-card h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .tag {
+            font-size: 0.8rem;
+            background-color: #fef3c7;
+            color: #b45309;
+            padding: 0.25rem 0.75rem;
+            border-radius: 999px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .bill-card p {
+            color: var(--text-dark);
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .bill-meta {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        /* Discussion Board */
+        .discussion-section {
+            background-color: var(--surface);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            flex-direction: column;
+            height: 500px; /* Fixed height for scrollable chat */
+        }
+
+        .discussion-header {
+            padding: 1.25rem;
+            border-bottom: 1px solid var(--border);
+            font-weight: 600;
+            font-size: 1.1rem;
+            background-color: #f8fafc;
+            border-radius: var(--radius) var(--radius) 0 0;
+        }
+
+        .message-board {
+            flex-grow: 1;
+            padding: 1.5rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
+        .message {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            background-color: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .message-content {
+            background-color: #f1f5f9;
+            padding: 1rem;
+            border-radius: 0 12px 12px 12px;
+            width: fit-content;
+            max-width: 80%;
+        }
+
+        .message-author {
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 0.25rem;
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        .message-time {
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            font-weight: 400;
+        }
+
+        .message-text {
+            font-size: 0.95rem;
+            line-height: 1.4;
+        }
+
+        /* Input Area */
+        .input-area {
+            padding: 1.25rem;
+            border-top: 1px solid var(--border);
+            display: flex;
+            gap: 1rem;
+        }
+
+        .input-area input {
+            flex-grow: 1;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .input-area input:focus {
+            border-color: var(--primary);
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 0 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            font-family: inherit;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-hover);
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">🏛️ Kingdom of 8th</div>
+        <a href="dashboard.html" class="btn-outline">← Back to Dashboard</a>
+    </nav>
+
+    <main>
+        <div class="header">
+            <h1>🗣️ Town Hall</h1>
+            <p>Read the bills currently on the floor and debate with your fellow citizens.</p>
+        </div>
+
+        <div class="bill-card">
+            <h2>
+                Bill 001: The Seating Act
+                <span class="tag">On the Floor</span>
+            </h2>
+            <p><strong>Proposal:</strong> This bill proposes that every Friday, citizens are allowed to choose their own seats for the duration of the class period, provided that classroom volume remains at a respectable Level 2.</p>
+            <div class="bill-meta">
+                Drafted by: Chancellor Sarah M. | Reading: 2nd
+            </div>
+        </div>
+
+        <div class="discussion-section">
+            <div class="discussion-header">
+                💬 Live Debate
+            </div>
+            
+            <div class="message-board" id="messageBoard">
+                <div class="message">
+                    <div class="avatar">J</div>
+                    <div class="message-content">
+                        <div class="message-author">Judge James <span class="message-time">10:02 AM</span></div>
+                        <div class="message-text">I support this bill, but who enforces the "Level 2 volume" rule? The teacher or the Chancellor?</div>
+                    </div>
+                </div>
+
+                <div class="message">
+                    <div class="avatar" style="background-color: var(--accent);">S</div>
+                    <div class="message-content">
+                        <div class="message-author">Chancellor Sarah <span class="message-time">10:05 AM</span></div>
+                        <div class="message-text">Good question! The Chancellor would give one warning, and if it's ignored, we revert to assigned seats.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="input-area">
+                <input type="text" id="chatInput" placeholder="State your argument..." autocomplete="off">
+                <button class="btn-primary" id="sendBtn">Post</button>
+            </div>
+        </div>
+    </main>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
+        import { getFirestore } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
+
+        // Your Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCNbW2UTw62V4ojtXd_F0ZbEbn9JWHFV7c",
+            authDomain: "thperiodwebsite.firebaseapp.com",
+            projectId: "thperiodwebsite",
+            storageBucket: "thperiodwebsite.firebasestorage.app",
+            messagingSenderId: "1035004245969",
+            appId: "1:1035004245969:web:f025b31117173da88a52f0",
+            measurementId: "G-2VM1MDHR3T"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        let currentUser = { name: "Citizen", initial: "C" };
+
+        // Check if logged in to get their real name
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                currentUser.name = user.displayName || "Citizen";
+                currentUser.initial = currentUser.name.charAt(0).toUpperCase();
+            } else {
+                // Kick them out if not logged in
+                window.location.href = "index.html";
+            }
+        });
+
+        // --- FRONTEND CHAT LOGIC ---
+        // Note: This currently only posts to the local screen. 
+        // You will need to write this to Firestore to make it multiplayer!
+        const chatInput = document.getElementById('chatInput');
+        const sendBtn = document.getElementById('sendBtn');
+        const messageBoard = document.getElementById('messageBoard');
+
+        function postMessage() {
+            const text = chatInput.value.trim();
+            if (text === "") return;
+
+            // Get current time
+            const now = new Date();
+            const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+            // Create HTML for new message
+            const msgHTML = `
+                <div class="message">
+                    <div class="avatar" style="background-color: var(--text-dark);">${currentUser.initial}</div>
+                    <div class="message-content">
+                        <div class="message-author">${currentUser.name} <span class="message-time">${timeString}</span></div>
+                        <div class="message-text">${text}</div>
+                    </div>
+                </div>
+            `;
+
+            // Append to board
+            messageBoard.insertAdjacentHTML('beforeend', msgHTML);
+            
+            // Clear input and scroll to bottom
+            chatInput.value = "";
+            messageBoard.scrollTop = messageBoard.scrollHeight;
+        }
+
+        // Trigger post on button click or Enter key
+        sendBtn.addEventListener('click', postMessage);
+        chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') postMessage();
+        });
+    </script>
+</body>
+</html>
