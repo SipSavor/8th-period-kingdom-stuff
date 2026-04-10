@@ -352,14 +352,14 @@
         const messageBox = document.getElementById('message-box');
 
         let isSignUpMode = true; 
+        let isRegistering = false; // NEW: Flag to prevent premature redirection
 
         // --- AUTH STATE OBSERVER ---
         onAuthStateChanged(auth, (user) => {
-            if (user) {
-                // If user is logged in, redirect them to the dashboard
+            // Only auto-redirect if they are logging in normally, NOT while registering
+            if (user && !isRegistering) {
                 window.location.href = "dashboard.html";
-            } else {
-                // If nobody is logged in, show the auth form
+            } else if (!user) {
                 authView.style.display = 'block';
                 authForm.reset();
                 messageBox.style.display = 'none';
@@ -404,14 +404,16 @@
 
             try {
                 if (isSignUpMode) {
-                    // SIGN UP
+                    // Tell the observer to wait!
+                    isRegistering = true; 
+                    
                     const name = studentNameInput.value.trim();
                     if (!name) throw new Error("Full Name is required.");
 
                     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
                     const user = userCredential.user;
 
-                    // Update Auth Profile & Firestore DB
+                    // Update Auth Profile & Firestore DB safely
                     await updateProfile(user, { displayName: name });
                     await setDoc(doc(db, "users", user.uid), {
                         uid: user.uid,
@@ -421,14 +423,19 @@
                         createdAt: new Date().toISOString()
                     });
 
+                    // NOW that everything is saved, we redirect manually
+                    window.location.href = "dashboard.html";
+
                 } else {
                     // SIGN IN
                     await signInWithEmailAndPassword(auth, email, password);
+                    // The onAuthStateChanged listener will handle the redirect here automatically
                 }
-                // No need for a success message; the onAuthStateChanged listener 
-                // at the top will instantly redirect them once successful.
                 
             } catch (error) {
+                // If it fails, make sure we turn off the registering flag
+                isRegistering = false; 
+                
                 let errorMessage = "Authentication failed.";
                 if (error.code === 'auth/email-already-in-use') errorMessage = "Email already exists.";
                 else if (error.code === 'auth/weak-password') errorMessage = "Password needs 6+ characters.";
