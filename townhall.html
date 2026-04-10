@@ -99,46 +99,6 @@
             font-size: 1.1rem;
         }
 
-        /* Current Bill Section */
-        .bill-card {
-            background-color: var(--surface);
-            padding: 2rem;
-            border-radius: var(--radius);
-            border: 1px solid var(--border);
-            box-shadow: var(--shadow-md);
-            border-top: 5px solid var(--primary);
-        }
-
-        .bill-card h2 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .tag {
-            font-size: 0.8rem;
-            background-color: #fef3c7;
-            color: #b45309;
-            padding: 0.25rem 0.75rem;
-            border-radius: 999px;
-            font-weight: 600;
-            text-transform: uppercase;
-        }
-
-        .bill-card p {
-            color: var(--text-dark);
-            line-height: 1.6;
-            margin-bottom: 1rem;
-        }
-
-        .bill-meta {
-            font-size: 0.9rem;
-            color: var(--text-muted);
-            font-weight: 500;
-        }
-
         /* Discussion Board */
         .discussion-section {
             background-color: var(--surface);
@@ -147,7 +107,7 @@
             box-shadow: var(--shadow-sm);
             display: flex;
             flex-direction: column;
-            height: 500px; /* Fixed height for scrollable chat */
+            height: 600px; /* Increased height since the bill is gone */
         }
 
         .discussion-header {
@@ -264,18 +224,7 @@
     <main>
         <div class="header">
             <h1>🗣️ Town Hall</h1>
-            <p>Read the bills currently on the floor and debate with your fellow citizens.</p>
-        </div>
-
-        <div class="bill-card">
-            <h2>
-                Bill 001: The Seating Act
-                <span class="tag">On the Floor</span>
-            </h2>
-            <p><strong>Proposal:</strong> This bill proposes that every Friday, citizens are allowed to choose their own seats for the duration of the class period, provided that classroom volume remains at a respectable Level 2.</p>
-            <div class="bill-meta">
-                Drafted by: Chancellor Sarah M. | Reading: 2nd
-            </div>
+            <p>Debate with your fellow citizens on the active issues.</p>
         </div>
 
         <div class="discussion-section">
@@ -284,22 +233,7 @@
             </div>
             
             <div class="message-board" id="messageBoard">
-                <div class="message">
-                    <div class="avatar">J</div>
-                    <div class="message-content">
-                        <div class="message-author">Judge James <span class="message-time">10:02 AM</span></div>
-                        <div class="message-text">I support this bill, but who enforces the "Level 2 volume" rule? The teacher or the Chancellor?</div>
-                    </div>
                 </div>
-
-                <div class="message">
-                    <div class="avatar" style="background-color: var(--accent);">S</div>
-                    <div class="message-content">
-                        <div class="message-author">Chancellor Sarah <span class="message-time">10:05 AM</span></div>
-                        <div class="message-text">Good question! The Chancellor would give one warning, and if it's ignored, we revert to assigned seats.</div>
-                    </div>
-                </div>
-            </div>
 
             <div class="input-area">
                 <input type="text" id="chatInput" placeholder="State your argument..." autocomplete="off">
@@ -313,7 +247,7 @@
         import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
         import { getFirestore, collection, addDoc, serverTimestamp, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
 
-        // Your NEW Firebase Configuration
+        // Your Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyCYbYKtFnZKCRBRLKV0_MQgj1ADzehz048",
             authDomain: "text01-6527c.firebaseapp.com",
