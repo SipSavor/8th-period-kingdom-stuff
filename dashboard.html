@@ -17,6 +17,9 @@
             --text-muted: #64748b;
             --border: #e2e8f0;
             --radius: 12px;
+            --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
         }
 
         * {
@@ -29,6 +32,7 @@
             font-family: 'Outfit', sans-serif;
             background-color: var(--bg-light);
             color: var(--text-dark);
+            -webkit-font-smoothing: antialiased;
         }
 
         /* Navigation Bar */
@@ -39,6 +43,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            box-shadow: var(--shadow-sm);
         }
 
         .logo {
@@ -46,7 +51,7 @@
             font-weight: 700;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
             color: var(--primary);
         }
 
@@ -61,16 +66,17 @@
             color: var(--text-dark);
         }
 
+        /* Buttons */
         .btn-outline {
-            padding: 0.5rem 1rem;
+            padding: 0.5rem 1.25rem;
             border: 1px solid var(--border);
-            background: transparent;
+            background: var(--surface);
             border-radius: 8px;
             font-family: inherit;
             font-weight: 600;
             color: var(--text-dark);
             cursor: pointer;
-            transition: 0.2s ease;
+            transition: all 0.2s ease;
         }
 
         .btn-outline:hover {
@@ -79,20 +85,43 @@
             border-color: #f87171;
         }
 
+        .btn-primary {
+            display: inline-block;
+            background-color: var(--primary);
+            color: white;
+            padding: 0.75rem 1.25rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            text-align: center;
+            width: 100%;
+            transition: background-color 0.2s ease, transform 0.1s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .btn-primary:active {
+            transform: scale(0.98);
+        }
+
         /* Main Dashboard Content */
         main {
-            max-width: 1000px;
+            max-width: 1100px;
             margin: 3rem auto;
             padding: 0 2rem;
         }
 
         .dashboard-header {
-            margin-bottom: 2rem;
+            margin-bottom: 2.5rem;
         }
 
         .dashboard-header h1 {
             font-size: 2.5rem;
+            font-weight: 700;
             margin-bottom: 0.5rem;
+            color: var(--text-dark);
         }
 
         .dashboard-header p {
@@ -109,10 +138,18 @@
 
         .card {
             background-color: var(--surface);
-            padding: 1.5rem;
+            padding: 1.75rem;
             border-radius: var(--radius);
             border: 1px solid var(--border);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            box-shadow: var(--shadow-sm);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
         }
 
         .card h3 {
@@ -120,30 +157,26 @@
             margin-bottom: 1rem;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
         }
 
         .card p {
             color: var(--text-muted);
-            margin-bottom: 1.5rem;
-            line-height: 1.5;
+            margin-bottom: 1.75rem;
+            line-height: 1.6;
+            flex-grow: 1; /* Pushes the button to the bottom if text varies in length */
         }
 
-        .btn-primary {
-            display: inline-block;
-            background-color: var(--primary);
-            color: white;
-            padding: 0.75rem 1.25rem;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: 500;
-            text-align: center;
-            width: 100%;
-            transition: 0.2s;
+        /* Admin Card Specifics */
+        #admin-card {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.4s ease-in;
         }
-
-        .btn-primary:hover {
-            background-color: var(--primary-hover);
+        
+        #admin-card.visible {
+            display: flex;
+            opacity: 1;
         }
     </style>
 </head>
@@ -182,7 +215,7 @@
                 <a href="#" class="btn-primary">View Active Polls</a>
             </div>
 
-            <div class="card" id="admin-card" style="display: none;">
+            <div class="card" id="admin-card">
                 <h3>👑 Admin Controls</h3>
                 <p>Manage citizen ranks, promote chancellors, and assign judges.</p>
                 <a href="admin.html" class="btn-primary" style="background-color: #0f172a;">Open Panel</a>
@@ -192,12 +225,12 @@
     </main>
 
     <script type="module">
-        // Firebase Imports (Now includes Firestore!)
+        // Firebase Imports 
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
         import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
 
-        // Your exact Firebase Configuration
+        // Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyCNbW2UTw62V4ojtXd_F0ZbEbn9JWHFV7c",
             authDomain: "thperiodwebsite.firebaseapp.com",
@@ -221,7 +254,7 @@
         onAuthStateChanged(auth, async (user) => {
             if (user) {
                 // 1. Display their name immediately
-                userNameDisplay.innerText = `Citizen ${user.displayName || ''}`;
+                userNameDisplay.innerText = `Citizen ${user.displayName || 'Loading...'}`;
 
                 // 2. Fetch their role from the database
                 try {
@@ -231,9 +264,12 @@
                     if (userDocSnap.exists()) {
                         const userRole = userDocSnap.data().role;
                         
-                        // 3. If they are an admin, un-hide the secret panel!
+                        // 3. Admin logic
+                        // NOTE: Showing this button does not secure the admin page! 
+                        // Make sure you have Firebase Firestore Security Rules set up 
+                        // to prevent non-admins from reading/writing admin data.
                         if (userRole === "admin") {
-                            adminCard.style.display = "block";
+                            adminCard.classList.add("visible");
                         }
                     }
                 } catch (error) {
@@ -241,7 +277,7 @@
                 }
 
             } else {
-                // User is NOT signed in, kick them back to login
+                // User is NOT signed in, redirect to login
                 window.location.href = "index.html";
             }
         });
@@ -249,9 +285,15 @@
         // Sign Out Logic
         signOutBtn.addEventListener('click', async () => {
             try {
+                // Visual feedback that sign out is processing
+                signOutBtn.innerText = "Signing out..."; 
                 await signOut(auth);
             } catch (error) {
                 console.error("Error signing out:", error);
+                signOutBtn.innerText = "Sign Out"; 
+                alert("Failed to sign out. Please try again.");
             }
         });
     </script>
+</body>
+</html>
