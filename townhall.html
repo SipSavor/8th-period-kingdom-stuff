@@ -107,7 +107,7 @@
             box-shadow: var(--shadow-sm);
             display: flex;
             flex-direction: column;
-            height: 600px; /* Increased height since the bill is gone */
+            height: 600px; 
         }
 
         .discussion-header {
@@ -245,7 +245,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
         import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
-        import { getFirestore, collection, addDoc, serverTimestamp, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, serverTimestamp, query, orderBy, onSnapshot, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
 
         // Your Firebase Configuration
         const firebaseConfig = {
@@ -264,10 +264,25 @@
 
         let currentUser = { name: "Citizen", initial: "C" };
 
-        // Check user session
-        onAuthStateChanged(auth, (user) => {
+        // Check user session and fetch name from Database
+        onAuthStateChanged(auth, async (user) => {
             if (user) {
+                // Default fallback
                 currentUser.name = user.displayName || "Citizen";
+                
+                try {
+                    const userDocRef = doc(db, "users", user.uid);
+                    const userDocSnap = await getDoc(userDocRef);
+                    if (userDocSnap.exists()) {
+                        const userData = userDocSnap.data();
+                        // 1. Prioritize DB name, 2. Auth display name, 3. Fallback
+                        currentUser.name = userData.name || userData.fullName || user.displayName || "Citizen";
+                    }
+                } catch (error) {
+                    console.error("Error fetching user name:", error);
+                }
+
+                // Set initial for avatar after getting the real name
                 currentUser.initial = currentUser.name.charAt(0).toUpperCase();
             } else {
                 window.location.href = "index.html"; // Kick out if not logged in
