@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voting Booth | Kingdom of 8th</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #064e3b; 
+            --primary-hover: #065f46;
+            --accent: #d97706;  
+            --bg-light: #f8fafc;
+            --surface: #ffffff;
+            --text-dark: #0f172a;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --radius: 12px;
+            --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Navigation Bar */
+        nav {
+            background-color: var(--surface);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .logo {
+            font-size: 1.25rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        /* Buttons */
+        .btn-outline {
+            padding: 0.5rem 1.25rem;
+            border: 1px solid var(--border);
+            background: var(--surface);
+            border-radius: 8px;
+            font-family: inherit;
+            font-weight: 600;
+            color: var(--text-dark);
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .btn-outline:hover {
+            background-color: #f1f5f9;
+            border-color: #cbd5e1;
+        }
+
+        .btn-primary {
+            display: inline-block;
+            background-color: var(--primary);
+            color: white;
+            padding: 0.75rem 1.25rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            text-align: center;
+            width: 100%;
+            transition: background-color 0.2s ease, transform 0.1s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .btn-primary:active {
+            transform: scale(0.98);
+        }
+
+        /* Main Content */
+        main {
+            max-width: 900px; /* Slightly narrower than dashboard for better focus */
+            margin: 3rem auto;
+            padding: 0 2rem;
+        }
+
+        .header {
+            margin-bottom: 2.5rem;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+        }
+
+        .header p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        /* Poll List Layout */
+        .poll-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
+        .poll-card {
+            background-color: var(--surface);
+            padding: 1.5rem 2rem;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .poll-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .poll-info h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+        }
+
+        .poll-info p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .poll-status {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+        }
+
+        .status-active {
+            background-color: #dcfce7;
+            color: #166534;
+        }
+
+        .status-urgent {
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+
+        .poll-action {
+            min-width: 150px; /* Keeps buttons uniform size */
+        }
+        
+        /* Mobile Responsiveness */
+        @media (max-width: 600px) {
+            .poll-card {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1.5rem;
+            }
+            .poll-action {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">🏛️ Kingdom of 8th</div>
+        <a href="dashboard.html" class="btn-outline">← Back to Dashboard</a>
+    </nav>
+
+    <main>
+        <div class="header">
+            <h1>🗳️ The Voting Booth</h1>
+            <p>Make your voice heard. Select an active poll below to cast your official vote.</p>
+        </div>
+
+        <div class="poll-list">
+            
+            <div class="poll-card">
+                <div class="poll-info">
+                    <span class="poll-status status-active">Active</span>
+                    <h3>Bill 001: The Seating Act</h3>
+                    <p>A proposed bill to allow citizens to choose their own seats on Fridays.</p>
+                </div>
+                <div class="poll-action">
+                    <a href="YOUR_GOOGLE_FORM_LINK_HERE" target="_blank" class="btn-primary">Vote Now</a>
+                </div>
+            </div>
+
+            <div class="poll-card">
+                <div class="poll-info">
+                    <span class="poll-status status-urgent">Closes Soon</span>
+                    <h3>Chancellor Election: Quarter 4</h3>
+                    <p>Cast your ballot for the next Chancellor of the classroom.</p>
+                </div>
+                <div class="poll-action">
+                    <a href="YOUR_GOOGLE_FORM_LINK_HERE" target="_blank" class="btn-primary">Vote Now</a>
+                </div>
+        </div>
+    </main>
+
+</body>
+</html>
