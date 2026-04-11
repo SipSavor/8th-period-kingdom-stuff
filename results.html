@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voting Results | Kingdom of 8th</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #064e3b; 
+            --primary-hover: #065f46;
+            --accent: #d97706;  
+            --bg-light: #f8fafc;
+            --surface: #ffffff;
+            --text-dark: #0f172a;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --radius: 12px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+        }
+
+        /* Navigation Bar */
+        nav {
+            background-color: var(--surface);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.25rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .btn-outline {
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--border);
+            background: transparent;
+            border-radius: 8px;
+            font-family: inherit;
+            font-weight: 600;
+            color: var(--text-dark);
+            cursor: pointer;
+            text-decoration: none;
+            transition: 0.2s ease;
+        }
+
+        .btn-outline:hover {
+            background-color: var(--bg-light);
+        }
+
+        /* Main Content */
+        main {
+            max-width: 900px;
+            margin: 3rem auto;
+            padding: 0 2rem;
+        }
+
+        .page-header {
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .page-header h1 {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .page-header p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        /* Chart Containers */
+        .chart-grid {
+            display: grid;
+            grid-template-columns: 1fr; /* Centers it if there's only one */
+            gap: 2rem;
+            margin-bottom: 3rem;
+            max-width: 700px; /* Keeps the single chart from stretching too wide */
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .chart-card {
+            background-color: var(--surface);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            padding: 1.5rem;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 400px; /* Gives the chart plenty of room */
+        }
+
+        .chart-card iframe {
+            width: 100%;
+            height: 371px; /* Matched to your iframe height */
+            border: none;
+            border-radius: 8px;
+        }
+
+        .chart-title {
+            font-weight: 600;
+            font-size: 1.25rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            width: 100%;
+            text-align: left;
+        }
+
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="dashboard.html" class="logo">🏛️ Kingdom of 8th</a>
+        <a href="dashboard.html" class="btn-outline">← Back to Dashboard</a>
+    </nav>
+
+    <main>
+        <div class="page-header">
+            <h1>Voting Results Floor</h1>
+            <p>Live visual tracking of proposed legislation in the Kingdom.</p>
+        </div>
+
+        <div class="chart-grid">
+            
+            <div class="chart-card">
+                <div class="chart-title">Chancellor Votes</div>
+                
+                <iframe width="600" height="371" seamless frameborder="0" scrolling="no" src="https://docs.google.com/spreadsheets/d/e/2PACX-1vS-D0RGnMdV1WuOp3aXVcqdKhN3B0MpL9KlpXToWlbNv6ENsm07_A9MpWFktXFxEKXXOKpRBe9_F9OS/pubchart?oid=19246679&amp;format=interactive"></iframe>
+
+            </div>
+
+        </div>
+    </main>
+
+</body>
+</html>
