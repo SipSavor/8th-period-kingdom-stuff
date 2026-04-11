@@ -29,6 +29,7 @@
             font-family: 'Outfit', sans-serif;
             background-color: var(--bg-light);
             color: var(--text-dark);
+            -webkit-font-smoothing: antialiased;
         }
 
         /* Navigation Bar */
@@ -39,6 +40,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
         }
 
         .logo {
@@ -70,7 +72,7 @@
 
         /* Main Content */
         main {
-            max-width: 900px;
+            max-width: 1000px; /* Widened slightly to fit both charts comfortably */
             margin: 3rem auto;
             padding: 0 2rem;
         }
@@ -94,12 +96,16 @@
         /* Chart Containers */
         .chart-grid {
             display: grid;
-            grid-template-columns: 1fr; /* Centers it if there's only one */
+            grid-template-columns: 1fr; /* Stack on mobile */
             gap: 2rem;
             margin-bottom: 3rem;
-            max-width: 700px; /* Keeps the single chart from stretching too wide */
-            margin-left: auto;
-            margin-right: auto;
+        }
+
+        /* Side-by-side on desktop */
+        @media (min-width: 768px) {
+            .chart-grid {
+                grid-template-columns: 1fr 1fr; 
+            }
         }
 
         .chart-card {
@@ -113,7 +119,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            min-height: 400px; /* Gives the chart plenty of room */
+            min-height: 400px;
         }
 
         .chart-card iframe {
@@ -137,23 +143,26 @@
 <body>
 
     <nav>
-        <a href="dashboard.html" class="logo">🏛️ Kingdom of 8th</a>
+        <div class="logo">🏛️ Kingdom of 8th</div>
         <a href="dashboard.html" class="btn-outline">← Back to Dashboard</a>
     </nav>
 
     <main>
         <div class="page-header">
             <h1>Voting Results Floor</h1>
-            <p>Live visual tracking of proposed legislation in the Kingdom.</p>
+            <p>Live visual tracking of proposed legislation and elections in the Kingdom.</p>
         </div>
 
         <div class="chart-grid">
             
             <div class="chart-card">
-                <div class="chart-title">Chancellor Votes</div>
-                
+                <div class="chart-title">Chancellor Election</div>
                 <iframe width="600" height="371" seamless frameborder="0" scrolling="no" src="https://docs.google.com/spreadsheets/d/e/2PACX-1vS-D0RGnMdV1WuOp3aXVcqdKhN3B0MpL9KlpXToWlbNv6ENsm07_A9MpWFktXFxEKXXOKpRBe9_F9OS/pubchart?oid=19246679&amp;format=interactive"></iframe>
+            </div>
 
+            <div class="chart-card">
+                <div class="chart-title">Judge Election</div>
+                <iframe width="600" height="371" seamless frameborder="0" scrolling="no" src="https://docs.google.com/spreadsheets/d/e/2PACX-1vS-D0RGnMdV1WuOp3aXVcqdKhN3B0MpL9KlpXToWlbNv6ENsm07_A9MpWFktXFxEKXXOKpRBe9_F9OS/pubchart?oid=430616458&amp;format=interactive"></iframe>
             </div>
 
         </div>
