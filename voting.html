@@ -68,6 +68,7 @@
             cursor: pointer;
             text-decoration: none;
             transition: all 0.2s ease;
+            display: inline-block;
         }
 
         .btn-outline:hover {
@@ -118,6 +119,7 @@
         .header p {
             color: var(--text-muted);
             font-size: 1.1rem;
+            margin-bottom: 1.5rem; /* Added margin to separate text from the new button */
         }
 
         /* Poll List Layout */
@@ -204,6 +206,8 @@
         <div class="header">
             <h1>🗳️ The Voting Booth</h1>
             <p>Make your voice heard. Select an active poll below to cast your official vote.</p>
+            
+            <a href="results.html" class="btn-outline">📊 View Live Results</a>
         </div>
 
         <div class="poll-list">
@@ -217,6 +221,8 @@
                 <div class="poll-action">
                     <a href="https://forms.gle/YwmLiGTFje3J62pr8" target="_blank" class="btn-primary">Vote Now</a>
                 </div>
+            </div>
+            
         </div>
     </main>
 
